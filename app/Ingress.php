@@ -18,6 +18,8 @@ class Ingress extends Model
         "client_id",
         "service_id",
         "name",
+        "sub_domain",
+        "resource",
         "created_at",
         "updated_at",
     ];

@@ -67,6 +67,8 @@ class InitialSchema extends Migration
             $table->integer("client_id")->unsigned();
             $table->integer("service_id")->unsigned();
             $table->string("name");
+            $table->string("sub_domain");
+            $table->string("resource");
             $table->timestamps();
 
             $table->foreign("client_id")->references("id")->on("clients");

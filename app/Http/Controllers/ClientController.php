@@ -103,7 +103,9 @@ class ClientController extends Controller
             $ingress = Ingress::create([
                 "client_id" => $client->id,
                 "service_id" => $service->id,
-                "name" => $label . "-ingress"
+                "name" => $label . "-ingress",
+                "sub_domain" => $client->sub_domain,
+                "resource" => $service->name
             ]);
 
             $database = Database::create([
