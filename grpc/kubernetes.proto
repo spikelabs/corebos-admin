@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+service ClusterManager {
+    rpc CreateClient (CreateClientRequest) returns (CreateClientResponse) {}
+}
+
+message Deployment {
+    int32 replicas = 1;
+    string name = 2;
+    string label = 3;
+}
+
+message Service {
+    string name = 1;
+    string label = 2;
+}
+
+message DeploymentPvc {
+    string name = 1;
+    string storage = 2;
+}
+
+message Ingress {
+    string name = 1;
+    string sub_domain = 2;
+    string resource = 3;
+}
+
+message Database {
+    string name = 1;
+    string label = 2;
+    string db_username = 3;
+    string db_password = 4;
+    string db_database = 5;
+}
+
+message DatabasePvc {
+    string name = 1;
+    string storage = 2;
+}
+
+message CreateClientRequest {
+    Deployment deployment = 1;
+    Service service = 2;
+    DeploymentPvc deployment_pvc = 3;
+    Ingress ingress = 4;
+    Database database = 5;
+    DatabasePvc database_pvc = 6;
+}
+
+message CreateClientResponse {
+    int32 success = 1;
+    string error = 2;
+}
