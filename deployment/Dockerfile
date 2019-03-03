@@ -44,7 +44,7 @@ ARG APP_ENV=local
 
 COPY deployment/nginx/default /etc/nginx/sites-available/
 
-COPY deploymen/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
+COPY deployment/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
 
 RUN composer install
 
@@ -52,7 +52,9 @@ RUN chown -R www-data:www-data /usr/share/nginx/html /run/php
 RUN chgrp -R www-data storage
 RUN chmod -R ug+rwx storage
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN php artisan cache:clear
 
 CMD ["/usr/bin/supervisord"]
 
