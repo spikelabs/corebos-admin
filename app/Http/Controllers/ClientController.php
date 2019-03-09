@@ -15,6 +15,7 @@ use App\DatabasePvc;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
+use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,16 +24,35 @@ class ClientController extends Controller
 {
 
     public function get(Request $request) {
-        $clients = Client::paginate();
 
-        return view("", compact('clients'));
+        $request->validate([
+            "filter" => "nullable|string"
+        ]);
+
+        if ($request->input('filter')){
+            $filter = $request->input('filter');
+            $clients = Client::where()
+                ->orWhere('name', 'like', "%$filter%")
+                ->orWhere('company_name', 'like', "%$filter%")
+                ->orWhere('sub_domain', 'like', "%$filter%")
+                ->paginate();
+        } else {
+            $clients = Client::paginate();
+
+        }
+        return view("clients", compact('clients'));
+    }
+
+    public function get_form() {
+        $data = null;
+        return view("client_form", compact('data'));
     }
 
     public function get_by_id($id) {
         $client = Client::find($id);
 
         if (!$client){
-            return redirect();
+            return redirect(route("clients"));
         }
 
         $data = [
@@ -46,7 +66,7 @@ class ClientController extends Controller
         $data['database'] = Database::where("client_id", $id)->first();
         $data["database_pvc"] = DatabasePvc::where("client_id", $id)->first();
 
-        return view("", compact('data'));
+        return view("client_form", compact('data'));
     }
 
     public function create(Request $request) {
@@ -71,9 +91,9 @@ class ClientController extends Controller
             "sub_domain",
         ]);
 
-        $data["password"] = Hash::make($data["password"]);
+//        $data["password"] = Hash::make($data["password"]);
 
-        DB::transaction(function () use ($data){
+        $data = DB::transaction(function () use ($data){
 
             $client = Client::create($data);
 
@@ -86,7 +106,7 @@ class ClientController extends Controller
                 "label" => $label,
             ]);
 
-            $service = Deployment::create([
+            $service = Service::create([
                 "client_id" => $client->id,
                 "deployment_id" => $deployment->id,
                 "name" => $label . "-cluster-ip-service",
@@ -124,16 +144,29 @@ class ClientController extends Controller
                 "name" => $label . "-database-pvc"
             ]);
 
+            return [
+                'client' => $client,
+                'deployment' => $deployment,
+                'service' => $service,
+                'deployment_pvc' => $deployment_pvc,
+                'ingress' => $ingress,
+                'database' => $database,
+                'database_pvc' => $database_pvc
+            ];
+
         }, Controller::TRANSACTION_RETRY);
 
-        return redirect();
 
+        return redirect(route("client", ['id' => $data['client']->id]));
 
     }
 
     public function update(Request $request, $id) {
         $request->validate([
             "name" => 'required|string',
+            'company_name' => 'required|string',
+            'description' => 'required|string',
+            'sub_domain' => 'required|string',
             "replicas" => 'required|integer|min:1',
             "deployment_storage" => 'required|integer|min:1',
             'database_storage' => 'required|integer|min:1',
@@ -147,7 +180,10 @@ class ClientController extends Controller
 
         DB::transaction(function () use ($request, $id){
             Client::where('id', $id)->update([
-                'name' => $request->input('name')
+                'name' => $request->input('name'),
+                'company_name' => $request->input('company_name'),
+                'description' => $request->input('description'),
+                'sub_domain' => $request->input('sub_domain')
             ]);
 
             Deployment::where("client_id", $id)->update([
@@ -161,9 +197,14 @@ class ClientController extends Controller
             DatabasePvc::where('client_id', $id)->update([
                 'storage' => $request->input("database_storage")
             ]);
+
+            Ingress::where('client_id', $id)->update([
+                'sub_domain' => $request->input('sub_domain')
+            ]);
+
         }, Controller::TRANSACTION_RETRY);
 
-        return redirect();
+        return redirect(route("client", ['id' => $id]));
 
     }
 
@@ -178,7 +219,7 @@ class ClientController extends Controller
 
         });
 
-        return redirect();
+        return redirect(route("clients"));
     }
 
 }

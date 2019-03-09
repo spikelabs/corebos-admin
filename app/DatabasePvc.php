@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class DatabasePvc extends Model
 {
 
-    protected $table = "database_vpc";
+    protected $table = "database_pvc";
 
     protected $fillable = [
         "client_id",
