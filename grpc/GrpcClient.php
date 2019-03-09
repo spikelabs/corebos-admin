@@ -25,7 +25,7 @@ class GrpcClient
 
     public function __construct()
     {
-        $this->client = $client = new ClusterManagerClient("10.0.2.2:8080", [
+        $this->client = $client = new ClusterManagerClient(env("GRPC_CLIENT"), [
             'credentials' => Grpc\ChannelCredentials::createInsecure(),
         ]);
     }

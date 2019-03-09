@@ -22,6 +22,8 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i -e 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.1/fpm/php.ini
 RUN echo "extension=grpc.so" >> /etc/php/7.1/fpm/php.ini
 RUN echo "extension=protobuf.so" >> /etc/php/7.1/fpm/php.ini
+RUN echo "extension=grpc.so" >> /etc/php/7.1/cli/php.ini
+RUN echo "extension=protobuf.so" >> /etc/php/7.1/cli/php.ini
 
 RUN composer global require hirak/prestissimo
 RUN mkdir -p /tmp/composer /run/php
@@ -48,7 +50,7 @@ COPY deployment/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
 
 RUN composer install
 
-RUN chown -R www-data:www-data /usr/share/nginx/html /run/php
+RUN chown -R www-data:www-data /var/www/html /run/php
 RUN chgrp -R www-data storage
 RUN chmod -R ug+rwx storage
 

@@ -15,6 +15,7 @@ use App\DatabasePvc;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
+use App\Jobs\CreateClient;
 use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -155,6 +156,18 @@ class ClientController extends Controller
             ];
 
         }, Controller::TRANSACTION_RETRY);
+
+        $job = (new CreateClient(
+                $data['deployment'],
+                $data['service'],
+                $data['deployment_pvc'],
+                $data['ingress'],
+                $data['database'],
+                $data['database_pvc']
+            ))
+            ->onConnection('database');
+
+        $this->dispatch($job);
 
 
         return redirect(route("client", ['id' => $data['client']->id]));
