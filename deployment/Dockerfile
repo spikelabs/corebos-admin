@@ -52,8 +52,8 @@ COPY deployment/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
 RUN composer install
 
 RUN chown -R www-data:www-data /var/www/html /run/php
-RUN chgrp -R www-data storage
-RUN chmod -R ug+rwx storage
+RUN chgrp -R www-data storage bootstrap/cache
+RUN chmod -R ug+rwx storage bootstrap/cache
 
 COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

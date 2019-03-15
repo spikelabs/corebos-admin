@@ -1,22 +1,27 @@
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+        listen 80;
+        listen [::]:80;
 
-    root /var/www/html/public;
-    index index.php index.html index.htm index.nginx-debian.html;
+        root /var/www/html/public;
 
-    server_name server_domain_or_IP;
+        index index.php index.html index.htm index.nginx-debian.html;
 
-    location / {
-        try_files $uri $uri/ =404;
-    }
+        server_name example.com www.example.com;
 
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.1-fpm.sock;
-    }
+        location / {
+                try_files $uri $uri/ /index.php?$query_string;
+        }
 
-    location ~ /\.ht {
-        deny all;
-    }
+        location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+                fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        }
+
+        location ~ /\.ht {
+                deny all;
+        }
+
+        location ~ /.well-known {
+                allow all;
+        }
 }
