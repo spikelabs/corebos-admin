@@ -39,6 +39,7 @@ RUN cp -a /tmp/composer/* ./
 RUN rm -Rf /tmp/composer
 
 COPY . ./
+COPY ./deployment/deployment-env ./.env
 
 RUN rm -Rf deployment
 
