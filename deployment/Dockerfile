@@ -54,6 +54,7 @@ RUN composer install
 RUN chown -R www-data:www-data /var/www/html /run/php
 RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
+RUN chmod -R 0777 ./storage
 
 COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
