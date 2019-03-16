@@ -63,6 +63,6 @@ RUN php artisan cache:clear
 COPY deployment/run.sh .
 RUN chmod +x run.sh
 
-CMD ["run.sh"]
+CMD ["./run.sh"]
 
 EXPOSE 80
