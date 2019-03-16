@@ -60,6 +60,9 @@ COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 RUN php artisan cache:clear
 
-CMD ["/usr/bin/supervisord"]
+COPY deployment/run.sh .
+RUN chmod +x run.sh
+
+CMD ["run.sh"]
 
 EXPOSE 80
