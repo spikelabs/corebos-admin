@@ -109,7 +109,7 @@ class CreateClient implements ShouldQueue
             throw new \Exception("grpc client connection error!");
         }
 
-        if ($response->success != 1) {
+        if ($response->getSuccess() != 1) {
             throw new \Exception("invalid operation with grpc client");
         }
 
