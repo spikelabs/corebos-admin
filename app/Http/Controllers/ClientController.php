@@ -98,7 +98,7 @@ class ClientController extends Controller
 
             $client = Client::create($data);
 
-            $label = strtolower(str_random(16) . "-" . $client->name);
+            $label = strtolower($client->name . "-" . str_random(16));
 
             $deployment = Deployment::create([
                 "client_id" => $client->id,
