@@ -142,8 +142,8 @@ class ClientController extends Controller
             $database_service = DatabaseService::create([
                 "client_id" => $client->id,
                 "database_id" => $database->id,
-                "name" => $label . "-cluster-ip-service",
-                "label" => $label
+                "name" => $label . "-database-cluster-ip-service",
+                "label" => $label . "-database"
             ]);
 
             $database_pvc = DatabasePvc::create([
