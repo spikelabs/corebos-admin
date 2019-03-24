@@ -33,7 +33,11 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
      */
     private $database = null;
     /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 6;</code>
+     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
+     */
+    private $database_service = null;
+    /**
+     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
      */
     private $database_pvc = null;
 
@@ -48,6 +52,7 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
      *     @type \DeploymentPvc $deployment_pvc
      *     @type \Ingress $ingress
      *     @type \Database $database
+     *     @type \DatabaseService $database_service
      *     @type \DatabasePvc $database_pvc
      * }
      */
@@ -167,7 +172,29 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 6;</code>
+     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
+     * @return \DatabaseService
+     */
+    public function getDatabaseService()
+    {
+        return $this->database_service;
+    }
+
+    /**
+     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
+     * @param \DatabaseService $var
+     * @return $this
+     */
+    public function setDatabaseService($var)
+    {
+        GPBUtil::checkMessage($var, \DatabaseService::class);
+        $this->database_service = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
      * @return \DatabasePvc
      */
     public function getDatabasePvc()
@@ -176,7 +203,7 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 6;</code>
+     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
      * @param \DatabasePvc $var
      * @return $this
      */

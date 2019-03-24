@@ -12,6 +12,7 @@ require_once base_path("grpc/CreateClientRequest.php");
 require_once base_path("grpc/CreateClientResponse.php");
 require_once base_path("grpc/Database.php");
 require_once base_path("grpc/DatabasePvc.php");
+require_once base_path("grpc/DatabaseService.php");
 require_once base_path("grpc/Deployment.php");
 require_once base_path("grpc/DeploymentPvc.php");
 require_once base_path("grpc/Ingress.php");

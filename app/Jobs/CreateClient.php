@@ -8,6 +8,7 @@ use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
 use App\Service;
+use App\DatabaseService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,6 +21,7 @@ require_once base_path("grpc/CreateClientRequest.php");
 require_once base_path("grpc/CreateClientResponse.php");
 require_once base_path("grpc/Database.php");
 require_once base_path("grpc/DatabasePvc.php");
+require_once base_path("grpc/DatabaseService.php");
 require_once base_path("grpc/Deployment.php");
 require_once base_path("grpc/DeploymentPvc.php");
 require_once base_path("grpc/Ingress.php");
@@ -41,10 +43,11 @@ class CreateClient implements ShouldQueue
     private $deployment_pvc;
     private $ingress;
     private $database;
+    private $database_service;
     private $database_pvc;
 
 
-    public function __construct(Deployment $deployment, Service $service, DeploymentPvc $deployment_pvc, Ingress $ingress, Database $database, DatabasePvc $database_pvc)
+    public function __construct(Deployment $deployment, Service $service, DeploymentPvc $deployment_pvc, Ingress $ingress, Database $database, DatabaseService $database_service, DatabasePvc $database_pvc)
     {
         //
         $this->deployment = $deployment;
@@ -53,6 +56,7 @@ class CreateClient implements ShouldQueue
         $this->ingress = $ingress;
         $this->database = $database;
         $this->database_pvc = $database_pvc;
+        $this->database_service = $database_service;
     }
 
     /**
@@ -95,6 +99,11 @@ class CreateClient implements ShouldQueue
         $database_data->setDbUsername($this->database->db_username);
         $database_data->setDbPassword($this->database->db_password);
         $request->setDatabase($database_data);
+
+        $database_service_data = new \DatabaseService();
+        $database_service_data->setName($this->database_service->name);
+        $database_service_data->setLabel($this->database_service->label);
+        $request->setDatabaseService($database_service_data);
 
         $database_pvc_data = new \DatabasePvc();
         $database_pvc_data->setName($this->database_pvc->name);

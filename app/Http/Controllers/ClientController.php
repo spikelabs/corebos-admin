@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Database;
 use App\DatabasePvc;
+use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
@@ -138,6 +139,13 @@ class ClientController extends Controller
                 "db_database" => $client->name
             ]);
 
+            $database_service = DatabaseService::create([
+                "client_id" => $client->id,
+                "database_id" => $database->id,
+                "name" => $label . "-cluster-ip-service",
+                "label" => $label
+            ]);
+
             $database_pvc = DatabasePvc::create([
                 "client_id" => $client->id,
                 "database_id" => $database->id,
@@ -152,6 +160,7 @@ class ClientController extends Controller
                 'deployment_pvc' => $deployment_pvc,
                 'ingress' => $ingress,
                 'database' => $database,
+                'database_service' => $database_service,
                 'database_pvc' => $database_pvc
             ];
 
@@ -163,6 +172,7 @@ class ClientController extends Controller
                 $data['deployment_pvc'],
                 $data['ingress'],
                 $data['database'],
+                $data['database_service'],
                 $data['database_pvc']
             ))
             ->onConnection('database');

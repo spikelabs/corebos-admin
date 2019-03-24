@@ -89,6 +89,18 @@ class InitialSchema extends Migration
 
         });
 
+        Schema::create("database_services", function (Blueprint $table){
+            $table->increments("id");
+            $table->integer("client_id")->unsigned();
+            $table->integer("database_id")->unsigned();
+            $table->string("name");
+            $table->string("label");
+            $table->timestamps();
+
+            $table->foreign("client_id")->references("id")->on("clients");
+            $table->foreign("database_id")->references("id")->on("databases");
+        });
+
         Schema::create("database_pvc", function (Blueprint $table){
             $table->increments("id");
             $table->integer("client_id")->unsigned();

@@ -34,6 +34,11 @@ message Database {
     string db_database = 5;
 }
 
+message DatabaseService {
+    string name = 1;
+    string label = 2;
+}
+
 message DatabasePvc {
     string name = 1;
     string storage = 2;
@@ -45,7 +50,8 @@ message CreateClientRequest {
     DeploymentPvc deployment_pvc = 3;
     Ingress ingress = 4;
     Database database = 5;
-    DatabasePvc database_pvc = 6;
+    DatabaseService database_service = 6;
+    DatabasePvc database_pvc = 7;
 }
 
 message CreateClientResponse {
