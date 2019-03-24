@@ -123,6 +123,7 @@ class InitialSchema extends Migration
     {
         //
         Schema::dropIfExists("database_pvc");
+        Schema::dropIfExists("database_services");
         Schema::dropIfExists("databases");
         Schema::dropIfExists("ingresses");
         Schema::dropIfExists("deployment_pvc");
