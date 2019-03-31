@@ -8,9 +8,9 @@ use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\Internal\GPBWrapperUtils;
 
 /**
- * Generated from protobuf message <code>CreateClientResponse</code>
+ * Generated from protobuf message <code>ClientResponse</code>
  */
-class CreateClientResponse extends \Google\Protobuf\Internal\Message
+class ClientResponse extends \Google\Protobuf\Internal\Message
 {
     /**
      * Generated from protobuf field <code>int32 success = 1;</code>

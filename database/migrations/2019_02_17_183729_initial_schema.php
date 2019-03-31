@@ -23,7 +23,8 @@ class InitialSchema extends Migration
             $table->string("company_name");
             $table->text("description");
             $table->string("sub_domain");
-            $table->integer("status")->default(0);
+            $table->boolean("status")->default(false);
+            $table->boolean("database_status")->default(false);
             $table->timestamps();
         });
 

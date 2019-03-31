@@ -16,7 +16,7 @@ use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
-use App\Jobs\CreateClient;
+use App\Jobs\CreateClientDatabase;
 use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -115,14 +115,14 @@ class ClientController extends Controller
                 "label" => $label
             ]);
 
-            $deployment_pvc = DeploymentPvc::create([
+            DeploymentPvc::create([
                 "client_id" => $client->id,
                 "deployment_id" => $deployment->id,
                 "name" => $label . "-deployment-pvc",
                 "storage" => "2Gi",
             ]);
 
-            $ingress = Ingress::create([
+            Ingress::create([
                 "client_id" => $client->id,
                 "service_id" => $service->id,
                 "name" => $label . "-ingress",
@@ -155,10 +155,6 @@ class ClientController extends Controller
 
             return [
                 'client' => $client,
-                'deployment' => $deployment,
-                'service' => $service,
-                'deployment_pvc' => $deployment_pvc,
-                'ingress' => $ingress,
                 'database' => $database,
                 'database_service' => $database_service,
                 'database_pvc' => $database_pvc
@@ -166,11 +162,7 @@ class ClientController extends Controller
 
         }, Controller::TRANSACTION_RETRY);
 
-        $job = (new CreateClient(
-                $data['deployment'],
-                $data['service'],
-                $data['deployment_pvc'],
-                $data['ingress'],
+        $job = (new CreateClientDatabase(
                 $data['database'],
                 $data['database_service'],
                 $data['database_pvc']

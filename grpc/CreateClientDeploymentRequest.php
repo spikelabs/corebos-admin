@@ -8,9 +8,9 @@ use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\Internal\GPBWrapperUtils;
 
 /**
- * Generated from protobuf message <code>CreateClientRequest</code>
+ * Generated from protobuf message <code>CreateClientDeploymentRequest</code>
  */
-class CreateClientRequest extends \Google\Protobuf\Internal\Message
+class CreateClientDeploymentRequest extends \Google\Protobuf\Internal\Message
 {
     /**
      * Generated from protobuf field <code>.Deployment deployment = 1;</code>
@@ -28,18 +28,6 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.Ingress ingress = 4;</code>
      */
     private $ingress = null;
-    /**
-     * Generated from protobuf field <code>.Database database = 5;</code>
-     */
-    private $database = null;
-    /**
-     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
-     */
-    private $database_service = null;
-    /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
-     */
-    private $database_pvc = null;
 
     /**
      * Constructor.
@@ -51,9 +39,6 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
      *     @type \Service $service
      *     @type \DeploymentPvc $deployment_pvc
      *     @type \Ingress $ingress
-     *     @type \Database $database
-     *     @type \DatabaseService $database_service
-     *     @type \DatabasePvc $database_pvc
      * }
      */
     public function __construct($data = NULL) {
@@ -145,72 +130,6 @@ class CreateClientRequest extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Ingress::class);
         $this->ingress = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.Database database = 5;</code>
-     * @return \Database
-     */
-    public function getDatabase()
-    {
-        return $this->database;
-    }
-
-    /**
-     * Generated from protobuf field <code>.Database database = 5;</code>
-     * @param \Database $var
-     * @return $this
-     */
-    public function setDatabase($var)
-    {
-        GPBUtil::checkMessage($var, \Database::class);
-        $this->database = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
-     * @return \DatabaseService
-     */
-    public function getDatabaseService()
-    {
-        return $this->database_service;
-    }
-
-    /**
-     * Generated from protobuf field <code>.DatabaseService database_service = 6;</code>
-     * @param \DatabaseService $var
-     * @return $this
-     */
-    public function setDatabaseService($var)
-    {
-        GPBUtil::checkMessage($var, \DatabaseService::class);
-        $this->database_service = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
-     * @return \DatabasePvc
-     */
-    public function getDatabasePvc()
-    {
-        return $this->database_pvc;
-    }
-
-    /**
-     * Generated from protobuf field <code>.DatabasePvc database_pvc = 7;</code>
-     * @param \DatabasePvc $var
-     * @return $this
-     */
-    public function setDatabasePvc($var)
-    {
-        GPBUtil::checkMessage($var, \DatabasePvc::class);
-        $this->database_pvc = $var;
 
         return $this;
     }

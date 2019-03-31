@@ -7,9 +7,10 @@
  */
 
 require_once base_path("grpc/GPBMetadata/Kubernetes.php");
+require_once base_path("grpc/ClientResponse.php");
 require_once base_path("grpc/ClusterManagerClient.php");
-require_once base_path("grpc/CreateClientRequest.php");
-require_once base_path("grpc/CreateClientResponse.php");
+require_once base_path("grpc/CreateClientDatabaseRequest.php");
+require_once base_path("grpc/CreateClientDeploymentRequest.php");
 require_once base_path("grpc/Database.php");
 require_once base_path("grpc/DatabasePvc.php");
 require_once base_path("grpc/DatabaseService.php");
@@ -31,8 +32,12 @@ class GrpcClient
         ]);
     }
 
-    public function createClient(CreateClientRequest $request){
-        return $this->client->CreateClient($request)->wait();
+    public function createClientDatabase(CreateClientDatabaseRequest $request){
+        return $this->client->CreateClientDatabase($request)->wait();
+    }
+
+    public function createClientDeployment(CreateClientDeploymentRequest $request){
+        return $this->client->CreateClientDeployment($request)->wait();
     }
 
 }

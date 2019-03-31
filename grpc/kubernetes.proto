@@ -1,7 +1,8 @@
 syntax = "proto3";
 
 service ClusterManager {
-    rpc CreateClient (CreateClientRequest) returns (CreateClientResponse) {}
+    rpc CreateClientDatabase (CreateClientDatabaseRequest) returns (ClientResponse) {}
+    rpc CreateClientDeployment (CreateClientDeploymentRequest) returns (ClientResponse) {}
 }
 
 message Deployment {
@@ -44,17 +45,20 @@ message DatabasePvc {
     string storage = 2;
 }
 
-message CreateClientRequest {
+message CreateClientDatabaseRequest {
+    Database database = 1;
+    DatabaseService database_service = 2;
+    DatabasePvc database_pvc = 3;
+}
+
+message CreateClientDeploymentRequest {
     Deployment deployment = 1;
     Service service = 2;
     DeploymentPvc deployment_pvc = 3;
     Ingress ingress = 4;
-    Database database = 5;
-    DatabaseService database_service = 6;
-    DatabasePvc database_pvc = 7;
 }
 
-message CreateClientResponse {
+message ClientResponse {
     int32 success = 1;
     string error = 2;
 }
