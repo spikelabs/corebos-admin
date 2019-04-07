@@ -34,52 +34,46 @@ class CreateClientDeployment implements ShouldQueue
      * @return void
      */
 
-    private $deployment;
-    private $service;
-    private $deployment_pvc;
-    private $ingress;
+    private $client_id;
 
-
-    public function __construct(Deployment $deployment, Service $service, DeploymentPvc $deployment_pvc, Ingress $ingress)
+    public function __construct($client_id)
     {
         //
-        $this->deployment = $deployment;
-        $this->service = $service;
-        $this->deployment_pvc = $deployment_pvc;
-        $this->ingress = $ingress;
+        $this->client_id = $client_id;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
+
     public function handle()
     {
         //
 
         $request = new \CreateClientDeploymentRequest();
 
+        $deployment = Deployment::where("client_id", $this->client_id)->first();
+        $service = Service::where("client_id", $this->client_id)->first();
+        $deployment_pvc = DeploymentPvc::where("client_id", $this->client_id)->first();
+        $ingress = Ingress::where("client_id", $this->client_id)->first();
+
         $deployment_data = new \Deployment();
-        $deployment_data->setLabel($this->deployment->label);
-        $deployment_data->setName($this->deployment->name);
-        $deployment_data->setReplicas($this->deployment->replicas);
+        $deployment_data->setLabel($deployment->label);
+        $deployment_data->setName($deployment->name);
+        $deployment_data->setReplicas($deployment->replicas);
         $request->setDeployment($deployment_data);
 
         $service_data = new \Service();
-        $service_data->setName($this->service->name);
-        $service_data->setLabel($this->service->label);
+        $service_data->setName($service->name);
+        $service_data->setLabel($service->label);
         $request->setService($service_data);
 
         $deployment_pvc_data = new \DeploymentPvc();
-        $deployment_pvc_data->setName($this->deployment_pvc->name);
-        $deployment_pvc_data->setStorage($this->deployment_pvc->storage);
+        $deployment_pvc_data->setName($deployment_pvc->name);
+        $deployment_pvc_data->setStorage($deployment_pvc->storage);
         $request->setDeploymentPvc($deployment_pvc_data);
 
         $ingress_data = new \Ingress();
-        $ingress_data->setName($this->ingress->name);
-        $ingress_data->setSubDomain($this->ingress->sub_domain);
-        $ingress_data->setResource($this->ingress->resource);
+        $ingress_data->setName($ingress->name);
+        $ingress_data->setSubDomain($ingress->sub_domain);
+        $ingress_data->setResource($ingress->resource);
         $request->setIngress($ingress_data);
 
         $client = new \GrpcClient();
