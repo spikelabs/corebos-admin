@@ -76,8 +76,6 @@ class ClientController extends Controller
         $request->validate([
             "name" => 'required|string',
             "email" => 'required|email',
-            "username" => 'required|string',
-            "password" => 'required|string',
             "company_name" => 'required|string',
             "description" => 'required|string',
             "sub_domain" => 'required|string'
@@ -86,14 +84,10 @@ class ClientController extends Controller
         $data = $request->only([
             "name",
             "email",
-            "username",
-            "password",
             "company_name",
             "description",
             "sub_domain",
         ]);
-
-//        $data["password"] = Hash::make($data["password"]);
 
         $data = DB::transaction(function () use ($data){
 

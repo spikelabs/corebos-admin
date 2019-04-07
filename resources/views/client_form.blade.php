@@ -45,20 +45,6 @@
                                 </div>
                             </div>
 
-                            <label for="username">Username</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input required type="text" name="username" class="form-control" placeholder="Enter client username" @if($data) value="{{ $data['client']->email }}" @endif>
-                                </div>
-                            </div>
-
-                            <label for="password">Password</label>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input required type="password" name="password" class="form-control" placeholder="Enter client password">
-                                </div>
-                            </div>
-
                             <label for="company_name">Company name</label>
                             <div class="form-group">
                                 <div class="form-line">

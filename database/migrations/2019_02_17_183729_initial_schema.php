@@ -18,8 +18,6 @@ class InitialSchema extends Migration
             $table->increments("id");
             $table->string("name");
             $table->string("email");
-            $table->string("username");
-            $table->string("password");
             $table->string("company_name");
             $table->text("description");
             $table->string("sub_domain");
