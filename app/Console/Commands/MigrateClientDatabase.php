@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Client;
 use App\Database;
 use App\DatabaseService;
 use App\Jobs\MigrateClientSchema;
 use Illuminate\Console\Command;
 use mysqli;
-use Nexmo\Redact\Client;
 
 class MigrateClientDatabase extends Command
 {
