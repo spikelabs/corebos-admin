@@ -6,7 +6,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN apt-get update && apt-get install -y curl supervisor zip unzip git software-properties-common zlib1g-dev
+RUN apt-get update && apt-get install -y curl supervisor zip unzip git software-properties-common zlib1g-dev cron
 
 RUN add-apt-repository -y ppa:ondrej/php
 
@@ -51,10 +51,17 @@ COPY deployment/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
 
 RUN composer install
 
+RUN touch storage/logs/cron.log
+RUN touch storage/logs/queue.log
+
 RUN chown -R www-data:www-data /var/www/html /run/php
 RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
 RUN chmod -R 0777 ./storage
+
+COPY deployment/laravel-cron /etc/cron.d/laravel-cron
+RUN chmod 0644 /etc/cron.d/laravel-cron
+RUN crontab /etc/cron.d/laravel-cron
 
 COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
