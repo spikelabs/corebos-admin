@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 
 class MigrateClientSchema implements ShouldQueue
 {
@@ -77,6 +78,6 @@ class MigrateClientSchema implements ShouldQueue
         $job = (new CreateClientDeployment($this->client_id))
             ->onConnection('database');
 
-        dispatch($job);
+        Queue::push($job);
     }
 }
