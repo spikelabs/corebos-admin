@@ -24,6 +24,26 @@ class Deployment extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string label = 3;</code>
      */
     private $label = '';
+    /**
+     * Generated from protobuf field <code>string db_host = 4;</code>
+     */
+    private $db_host = '';
+    /**
+     * Generated from protobuf field <code>string db_username = 5;</code>
+     */
+    private $db_username = '';
+    /**
+     * Generated from protobuf field <code>string db_password = 6;</code>
+     */
+    private $db_password = '';
+    /**
+     * Generated from protobuf field <code>string db_database = 7;</code>
+     */
+    private $db_database = '';
+    /**
+     * Generated from protobuf field <code>string site_url = 8;</code>
+     */
+    private $site_url = '';
 
     /**
      * Constructor.
@@ -34,6 +54,11 @@ class Deployment extends \Google\Protobuf\Internal\Message
      *     @type int $replicas
      *     @type string $name
      *     @type string $label
+     *     @type string $db_host
+     *     @type string $db_username
+     *     @type string $db_password
+     *     @type string $db_database
+     *     @type string $site_url
      * }
      */
     public function __construct($data = NULL) {
@@ -103,6 +128,116 @@ class Deployment extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->label = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_host = 4;</code>
+     * @return string
+     */
+    public function getDbHost()
+    {
+        return $this->db_host;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_host = 4;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setDbHost($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->db_host = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_username = 5;</code>
+     * @return string
+     */
+    public function getDbUsername()
+    {
+        return $this->db_username;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_username = 5;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setDbUsername($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->db_username = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_password = 6;</code>
+     * @return string
+     */
+    public function getDbPassword()
+    {
+        return $this->db_password;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_password = 6;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setDbPassword($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->db_password = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_database = 7;</code>
+     * @return string
+     */
+    public function getDbDatabase()
+    {
+        return $this->db_database;
+    }
+
+    /**
+     * Generated from protobuf field <code>string db_database = 7;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setDbDatabase($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->db_database = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string site_url = 8;</code>
+     * @return string
+     */
+    public function getSiteUrl()
+    {
+        return $this->site_url;
+    }
+
+    /**
+     * Generated from protobuf field <code>string site_url = 8;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSiteUrl($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->site_url = $var;
 
         return $this;
     }

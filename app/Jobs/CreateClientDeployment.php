@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Database;
+use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Ingress;
@@ -53,11 +55,18 @@ class CreateClientDeployment implements ShouldQueue
         $service = Service::where("client_id", $this->client_id)->first();
         $deployment_pvc = DeploymentPvc::where("client_id", $this->client_id)->first();
         $ingress = Ingress::where("client_id", $this->client_id)->first();
+        $database = Database::where("client_id", $this->client_id)->first();
+        $database_service = DatabaseService::where("client_id",  $this->client_id)->first();
 
         $deployment_data = new \Deployment();
         $deployment_data->setLabel($deployment->label);
         $deployment_data->setName($deployment->name);
         $deployment_data->setReplicas($deployment->replicas);
+        $deployment_data->setDbHost($database_service->name);
+        $deployment_data->setDbUsername($database->db_username);
+        $deployment_data->setDbPassword($database->db_password);
+        $deployment_data->setDbDatabase($database->db_database);
+        $deployment_data->setSiteUrl("https://" . $ingress->sub_domain);
         $request->setDeployment($deployment_data);
 
         $service_data = new \Service();

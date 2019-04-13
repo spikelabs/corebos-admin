@@ -9,6 +9,11 @@ message Deployment {
     int32 replicas = 1;
     string name = 2;
     string label = 3;
+    string db_host = 4;
+    string db_username = 5;
+    string db_password = 6;
+    string db_database = 7;
+    string site_url = 8;
 }
 
 message Service {
