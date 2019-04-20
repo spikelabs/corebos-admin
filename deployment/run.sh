@@ -6,6 +6,7 @@ echo "DB_DATABASE=$DB_DATABASE" >> .env
 echo "DB_USERNAME=$DB_USERNAME" >> .env
 echo "DB_PASSWORD=$DB_PASSWORD" >> .env
 echo "GRPC_CLIENT=$GRPC_CLIENT" >> .env
+echo "APP_ENV=$APP_ENV" >> .env
 
 php artisan cache:clear
 php artisan config:cache

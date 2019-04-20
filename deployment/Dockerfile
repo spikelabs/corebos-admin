@@ -43,8 +43,6 @@ COPY ./deployment/deployment-env ./.env
 
 RUN rm -Rf deployment
 
-ARG APP_ENV=local
-
 COPY deployment/nginx/default /etc/nginx/sites-available/
 
 COPY deployment/php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
