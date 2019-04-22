@@ -10,5 +10,6 @@ echo "GRPC_CLIENT=$GRPC_CLIENT" >> .env
 
 php artisan cache:clear
 php artisan config:cache
+php artisan config:clear
 
 /usr/bin/supervisord
