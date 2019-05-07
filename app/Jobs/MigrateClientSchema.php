@@ -71,12 +71,8 @@ class MigrateClientSchema implements ShouldQueue
             'database.connections.mysql.password' => env("DB_PASSWORD"),
         ]);
 
-        DB::purge();
-
-        DB::reconnect();
-
         $job = (new CreateClientDeployment($this->client_id))
-            ->onConnection('database');
+            ->onConnection('redis');
 
         Queue::push($job);
     }

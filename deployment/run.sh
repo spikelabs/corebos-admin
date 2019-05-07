@@ -6,6 +6,7 @@ echo "DB_PORT=$DB_PORT" >> .env
 echo "DB_DATABASE=$DB_DATABASE" >> .env
 echo "DB_USERNAME=$DB_USERNAME" >> .env
 echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+echo "REDIS_HOST=$REDIS_HOST" >> .env
 echo "GRPC_CLIENT=$GRPC_CLIENT" >> .env
 
 php artisan cache:clear

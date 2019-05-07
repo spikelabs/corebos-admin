@@ -161,7 +161,7 @@ class ClientController extends Controller
                 $data['database_service'],
                 $data['database_pvc']
             ))
-            ->onConnection('database');
+            ->onConnection('redis');
 
         $this->dispatch($job);
 

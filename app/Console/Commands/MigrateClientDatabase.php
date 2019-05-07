@@ -66,7 +66,7 @@ class MigrateClientDatabase extends Command
             }
 
             $job = (new MigrateClientSchema($id))
-                ->onConnection('database');
+                ->onConnection('redis');
 
             dispatch($job);
             $client_ids[] = $id;
