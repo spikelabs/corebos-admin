@@ -56,9 +56,9 @@ class MigrateClientSchema implements ShouldQueue
             'database.connections.mysql.password' => $password,
         ]);
 
-        DB::purge();
+        DB::purge('mysql');
 
-        DB::reconnect();
+        DB::reconnect('mysql');
 
         $query = file_get_contents(base_path("gdprcore.sql"));
 
@@ -70,6 +70,10 @@ class MigrateClientSchema implements ShouldQueue
             'database.connections.mysql.username' => env("DB_USERNAME"),
             'database.connections.mysql.password' => env("DB_PASSWORD"),
         ]);
+
+        DB::purge('mysql');
+
+        DB::reconnect('mysql');
 
         $job = (new CreateClientDeployment($this->client_id))
             ->onConnection('redis');
