@@ -94,7 +94,7 @@ class CreateClientDeployment implements ShouldQueue
         }
 
         if ($response->getSuccess() != 1) {
-            throw new \Exception("invalid operation with grpc client");
+            throw new \Exception($response->getError());
         }
 
     }
