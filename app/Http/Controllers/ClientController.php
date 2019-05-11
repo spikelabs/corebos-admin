@@ -33,8 +33,7 @@ class ClientController extends Controller
 
         if ($request->input('filter')){
             $filter = $request->input('filter');
-            $clients = Client::where()
-                ->orWhere('name', 'like', "%$filter%")
+            $clients = Client::where('name', 'like', "%$filter%")
                 ->orWhere('company_name', 'like', "%$filter%")
                 ->orWhere('sub_domain', 'like', "%$filter%")
                 ->paginate();
