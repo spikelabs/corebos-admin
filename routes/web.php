@@ -13,17 +13,9 @@
 
 Auth::routes(['register' => false]);
 
-Route::get('test', function (){
-    \App\User::create([
-        'name' => "admin",
-        'email' => 'test@test.com',
-        'password'=> \Illuminate\Support\Facades\Hash::make("123456")
-    ]);
-});
-
 Route::middleware('auth')->group(function (){
 
-    Route::get("/", "ClientController@get")->name("clients");
+    Route::get("/clients", "ClientController@get")->name("clients");
 
     Route::get("/client", "ClientController@get_form")->name("client_form");
 
@@ -38,5 +30,27 @@ Route::middleware('auth')->group(function (){
     Route::get("/profile", "ProfileController@get")->name("get_profile");
 
     Route::post("/profile", "ProfileController@update")->name("update_profile");
+
+    Route::get("/", "ClusterController@get")->name("clusters");
+
+    Route::get("/cluster", "ClusterController@get_form")->name("cluster_form");
+
+    Route::get('/cluster/{id}', 'ClusterController@get_by_id')->where('id', '[0-9]+')->name('cluster');
+
+    Route::put('/cluster/{id}', 'ClusterController@update')->where('id', '[0-9]+')->name('update_cluster');
+
+    Route::post("/cluster", 'ClusterController@create')->name("create_cluster");
+
+    Route::get("/client-images", "ImageController@get")->name("images");
+
+    Route::get("/client-image", "ImageController@get_form")->name("image_form");
+
+    Route::get('/client-image/{id}', 'ImageController@get_by_id')->where('id', '[0-9]+')->name('image');
+
+    Route::put('/client-image/{id}', 'ImageController@update')->where('id', '[0-9]+')->name('update_image');
+
+    Route::post("/client-image", 'ImageController@create')->name("create_image");
+
+
 
 });

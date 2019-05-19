@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Welcome To | Bootstrap Based Admin Template - Material Design</title>
+    <title>Corbos Admin</title>
     <!-- Favicon-->
     <link rel="icon" href="{{ asset("images/favicon.ico") }}" type="image/x-icon">
 
@@ -66,7 +66,35 @@
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li id="tours">
+                    <li id="clusters">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">list</i>
+                            <span>Cluster</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ route("clusters") }}">Clusters</a>
+                            </li>
+                            <li>
+                                <a href="{{ route("cluster_form") }}">New</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="images">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">list</i>
+                            <span>Image</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ route("images") }}">Images</a>
+                            </li>
+                            <li>
+                                <a href="{{ route("image_form") }}">New</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="clients">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">list</i>
                             <span>Client</span>

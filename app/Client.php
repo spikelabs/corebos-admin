@@ -24,6 +24,8 @@ class Client extends Model
         "database_status",
         "created_at",
         "updated_at",
+        "cluster_id",
+        "image_id"
     ];
 
 }

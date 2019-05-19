@@ -3,7 +3,7 @@
 @section("content")
     <div class="container-fluid">
         <div class="block-header">
-            <h2>BASIC FORM ELEMENTS</h2>
+            <h2>Client</h2>
         </div>
 
         @if ($errors->any())
@@ -82,5 +82,9 @@
 @endsection
 
 @section("script")
-
+    <script>
+        $(document).ready(function () {
+            $("#clients").addClass("active");
+        })
+    </script>
 @endsection

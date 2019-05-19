@@ -14,6 +14,22 @@ class InitialSchema extends Migration
     public function up()
     {
 
+        Schema::create("clusters", function (Blueprint $table){
+           $table->increments("id");
+           $table->string("name");
+           $table->string("ip_address");
+           $table->string("cluster_id");
+           $table->timestamps();
+        });
+
+        Schema::create("images", function (Blueprint $table){
+            $table->increments("id");
+            $table->string("name");
+            $table->string("dockerhub_image");
+            $table->string("sql_file");
+            $table->timestamps();
+        });
+
         Schema::create("clients", function (Blueprint $table){
             $table->increments("id");
             $table->string("name");
@@ -23,7 +39,12 @@ class InitialSchema extends Migration
             $table->string("sub_domain");
             $table->boolean("status")->default(false);
             $table->boolean("database_status")->default(false);
+            $table->integer("cluster_id")->unsigned();
+            $table->integer("image_id")->unsigned();
             $table->timestamps();
+
+            $table->foreign("cluster_id")->references("id")->on("clusters");
+            $table->foreign("image_id")->references("id")->on("images");
         });
 
         Schema::create("deployments", function (Blueprint $table){
@@ -111,6 +132,12 @@ class InitialSchema extends Migration
             $table->foreign("client_id")->references("id")->on("clients");
             $table->foreign("database_id")->references("id")->on("databases");
         });
+
+        \App\User::create([
+            'name' => "admin",
+            'email' => 'test@test.com',
+            'password'=> \Illuminate\Support\Facades\Hash::make("123456")
+        ]);
     }
 
     /**
@@ -129,5 +156,7 @@ class InitialSchema extends Migration
         Schema::dropIfExists("services");
         Schema::dropIfExists("deployments");
         Schema::dropIfExists("clients");
+        Schema::dropIfExists("images");
+        Schema::dropIfExists("clusters");
     }
 }
