@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function (){
 
     Route::post("/cluster", 'ClusterController@create')->name("create_cluster");
 
+    Route::get("/cluster/delete/{id}", 'ClusterController@delete')->where('id', '[0-9]+')->name('delete_cluster');
+
     Route::get("/client-images", "ImageController@get")->name("images");
 
     Route::get("/client-image", "ImageController@get_form")->name("image_form");
@@ -51,6 +53,7 @@ Route::middleware('auth')->group(function (){
 
     Route::post("/client-image", 'ImageController@create')->name("create_image");
 
+    Route::get("/client-image/delete/{id}", 'ImageController@delete')->where('id', '[0-9]+')->name('delete_image');
 
 
 });

@@ -60,7 +60,7 @@
                                     <td>{{ $detail->name }}</td>
                                     <td>{{ $detail->dockerhub_image }}</td>
                                     <td><a href="{{ route("image", ["id" => $detail->id]) }}" class="btn btn-primary waves-effect">View</a></td>
-                                    <td><a class="btn btn-danger waves-effect">Delete</a></td>
+                                    <td><a href="{{ route("delete_image", ["id" => $detail->id]) }}" class="btn btn-danger waves-effect">Delete</a></td>
                                 </tr>
                             @endforeach
                             </tbody>

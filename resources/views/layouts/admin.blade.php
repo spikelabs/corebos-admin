@@ -33,6 +33,8 @@
 
     <link href="{{ asset("plugins/jquery-spinner/css/bootstrap-spinner.css") }}" rel="stylesheet">
 
+    <link href="{{ asset("plugins/bootstrap-select/css/bootstrap-select.css") }}" rel="stylesheet" />
+
 </head>
 
 <body class="theme-red">

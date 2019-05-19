@@ -10,11 +10,13 @@ namespace App\Http\Controllers;
 
 
 use App\Client;
+use App\Cluster;
 use App\Database;
 use App\DatabasePvc;
 use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
+use App\Image;
 use App\Ingress;
 use App\Jobs\CreateClientDatabase;
 use App\Service;
@@ -28,24 +30,53 @@ class ClientController extends Controller
     public function get(Request $request) {
 
         $request->validate([
-            "filter" => "nullable|string"
+            "filter" => "nullable|string",
+            "image_id" => "nullable|integer",
+            "cluster_id" => "nullable|integer"
         ]);
 
-        if ($request->input('filter')){
-            $filter = $request->input('filter');
-            $clients = Client::where('name', 'like', "%$filter%")
-                ->orWhere('company_name', 'like', "%$filter%")
-                ->orWhere('sub_domain', 'like', "%$filter%")
-                ->paginate();
-        } else {
-            $clients = Client::paginate();
+        $filter = $request->input("filter");
+        $image_id = $request->input("image_id", -1);
+        $cluster_id = $request->input("cluster_id", -1);
 
+        $clients = Client::where("cluster_id", $cluster_id);
+
+        if ($cluster_id <= 0) {
+            $clients = Client::where("cluster_id", '>', 0);
         }
-        return view("clients", compact('clients'));
+
+        if ($image_id > 0) {
+            $clients = $clients->where("image_id", $image_id);
+        }
+
+        if ($filter){
+            $clients = $clients->where(function ($q) use ($filter){
+                $q->where('name', 'like', "%$filter%")
+                    ->orWhere('company_name', 'like', "%$filter%")
+                    ->orWhere('sub_domain', 'like', "%$filter%");
+            })->paginate();
+        } else {
+            $clients = $clients->paginate();
+        }
+
+        $clusters = Cluster::all();
+        $images = Image::all();
+
+        return view("clients", compact(
+            'clients',
+            'clusters',
+            'images',
+            'filter',
+            'image_id',
+            'cluster_id'));
     }
 
     public function get_form() {
-        $data = null;
+        $data = [
+            "clusters" => Cluster::all(),
+            "images" => Image::all()
+        ];
+
         return view("client_form", compact('data'));
     }
 
@@ -60,12 +91,8 @@ class ClientController extends Controller
             'client' => $client
         ];
 
-        $data['deployment'] = Deployment::where("client_id", $id)->first();
-        $data['service'] = Deployment::where("client_id", $id)->first();
-        $data['deployment_pvc'] = DeploymentPvc::where("client_id", $id)->first();
-        $data['ingress'] = Ingress::where("client_id", $id)->first();
-        $data['database'] = Database::where("client_id", $id)->first();
-        $data["database_pvc"] = DatabasePvc::where("client_id", $id)->first();
+        $data['clusters'] = [Cluster::find($client->cluster_id)];
+        $data['images'] = [Image::find($client->image_id)];
 
         return view("client_form", compact('data'));
     }
@@ -77,7 +104,9 @@ class ClientController extends Controller
             "email" => 'required|email',
             "company_name" => 'required|string',
             "description" => 'required|string',
-            "sub_domain" => 'required|string'
+            "sub_domain" => 'required|string',
+            "cluster_id" => 'required|integer',
+            "image_id" => "required|integer"
         ]);
 
         $data = $request->only([
@@ -86,7 +115,21 @@ class ClientController extends Controller
             "company_name",
             "description",
             "sub_domain",
+            "cluster_id",
+            "image_id",
         ]);
+
+        $cluster = Cluster::find($data["cluster_id"]);
+
+        if (!$cluster) {
+            return back()->withErrors(["Cluster not found!"]);
+        }
+
+        $image = Image::find($data["image_id"]);
+
+        if (!$image) {
+            return back()->withErrors(["Image not found!"]);
+        }
 
         $data = DB::transaction(function () use ($data){
 
@@ -155,14 +198,14 @@ class ClientController extends Controller
 
         }, Controller::TRANSACTION_RETRY);
 
-        $job = (new CreateClientDatabase(
-                $data['database'],
-                $data['database_service'],
-                $data['database_pvc']
-            ))
-            ->onConnection('redis');
-
-        $this->dispatch($job);
+//        $job = (new CreateClientDatabase(
+//                $data['database'],
+//                $data['database_service'],
+//                $data['database_pvc']
+//            ))
+//            ->onConnection('redis');
+//
+//        $this->dispatch($job);
 
 
         return redirect(route("client", ['id' => $data['client']->id]));
