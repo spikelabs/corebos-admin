@@ -24,6 +24,14 @@ class CreateClientDatabaseRequest extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.DatabasePvc database_pvc = 3;</code>
      */
     private $database_pvc = null;
+    /**
+     * Generated from protobuf field <code>.DatabaseNodePort database_node_port = 4;</code>
+     */
+    private $database_node_port = null;
+    /**
+     * Generated from protobuf field <code>string configData = 5;</code>
+     */
+    private $configData = '';
 
     /**
      * Constructor.
@@ -34,6 +42,8 @@ class CreateClientDatabaseRequest extends \Google\Protobuf\Internal\Message
      *     @type \Database $database
      *     @type \DatabaseService $database_service
      *     @type \DatabasePvc $database_pvc
+     *     @type \DatabaseNodePort $database_node_port
+     *     @type string $configData
      * }
      */
     public function __construct($data = NULL) {
@@ -103,6 +113,50 @@ class CreateClientDatabaseRequest extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \DatabasePvc::class);
         $this->database_pvc = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.DatabaseNodePort database_node_port = 4;</code>
+     * @return \DatabaseNodePort
+     */
+    public function getDatabaseNodePort()
+    {
+        return $this->database_node_port;
+    }
+
+    /**
+     * Generated from protobuf field <code>.DatabaseNodePort database_node_port = 4;</code>
+     * @param \DatabaseNodePort $var
+     * @return $this
+     */
+    public function setDatabaseNodePort($var)
+    {
+        GPBUtil::checkMessage($var, \DatabaseNodePort::class);
+        $this->database_node_port = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string configData = 5;</code>
+     * @return string
+     */
+    public function getConfigData()
+    {
+        return $this->configData;
+    }
+
+    /**
+     * Generated from protobuf field <code>string configData = 5;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setConfigData($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->configData = $var;
 
         return $this;
     }

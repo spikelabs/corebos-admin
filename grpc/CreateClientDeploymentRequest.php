@@ -28,6 +28,14 @@ class CreateClientDeploymentRequest extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.Ingress ingress = 4;</code>
      */
     private $ingress = null;
+    /**
+     * Generated from protobuf field <code>string database_node_port_name = 5;</code>
+     */
+    private $database_node_port_name = '';
+    /**
+     * Generated from protobuf field <code>string configData = 6;</code>
+     */
+    private $configData = '';
 
     /**
      * Constructor.
@@ -39,6 +47,8 @@ class CreateClientDeploymentRequest extends \Google\Protobuf\Internal\Message
      *     @type \Service $service
      *     @type \DeploymentPvc $deployment_pvc
      *     @type \Ingress $ingress
+     *     @type string $database_node_port_name
+     *     @type string $configData
      * }
      */
     public function __construct($data = NULL) {
@@ -130,6 +140,50 @@ class CreateClientDeploymentRequest extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Ingress::class);
         $this->ingress = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string database_node_port_name = 5;</code>
+     * @return string
+     */
+    public function getDatabaseNodePortName()
+    {
+        return $this->database_node_port_name;
+    }
+
+    /**
+     * Generated from protobuf field <code>string database_node_port_name = 5;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setDatabaseNodePortName($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->database_node_port_name = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string configData = 6;</code>
+     * @return string
+     */
+    public function getConfigData()
+    {
+        return $this->configData;
+    }
+
+    /**
+     * Generated from protobuf field <code>string configData = 6;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setConfigData($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->configData = $var;
 
         return $this;
     }

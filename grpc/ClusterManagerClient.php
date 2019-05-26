@@ -42,5 +42,44 @@ namespace {
                 $metadata, $options);
         }
 
+        /**
+         * @param \UpdateClientIngressRequest $argument input argument
+         * @param array $metadata metadata
+         * @param array $options call options
+         */
+        public function UpdateClientIngress(\UpdateClientIngressRequest $argument,
+                                            $metadata = [], $options = []) {
+            return $this->_simpleRequest('/ClusterManager/UpdateClientIngress',
+                $argument,
+                ['\ClientResponse', 'decode'],
+                $metadata, $options);
+        }
+
+        /**
+         * @param \UpdateClientDeploymentRequest $argument input argument
+         * @param array $metadata metadata
+         * @param array $options call options
+         */
+        public function UpdateClientDeployment(\UpdateClientDeploymentRequest $argument,
+                                               $metadata = [], $options = []) {
+            return $this->_simpleRequest('/ClusterManager/UpdateClientDeployment',
+                $argument,
+                ['\ClientResponse', 'decode'],
+                $metadata, $options);
+        }
+
+        /**
+         * @param \DeleteClientRequest $argument input argument
+         * @param array $metadata metadata
+         * @param array $options call options
+         */
+        public function DeleteClient(\DeleteClientRequest $argument,
+                                     $metadata = [], $options = []) {
+            return $this->_simpleRequest('/ClusterManager/DeleteClient',
+                $argument,
+                ['\ClientResponse', 'decode'],
+                $metadata, $options);
+        }
+
     }
 }

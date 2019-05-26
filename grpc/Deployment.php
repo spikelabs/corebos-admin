@@ -44,6 +44,10 @@ class Deployment extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string site_url = 8;</code>
      */
     private $site_url = '';
+    /**
+     * Generated from protobuf field <code>string image = 9;</code>
+     */
+    private $image = '';
 
     /**
      * Constructor.
@@ -59,6 +63,7 @@ class Deployment extends \Google\Protobuf\Internal\Message
      *     @type string $db_password
      *     @type string $db_database
      *     @type string $site_url
+     *     @type string $image
      * }
      */
     public function __construct($data = NULL) {
@@ -238,6 +243,28 @@ class Deployment extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->site_url = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string image = 9;</code>
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Generated from protobuf field <code>string image = 9;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setImage($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->image = $var;
 
         return $this;
     }

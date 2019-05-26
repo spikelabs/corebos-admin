@@ -98,14 +98,18 @@ class InitialSchema extends Migration
         Schema::create("databases", function (Blueprint $table){
             $table->increments("id");
             $table->integer("client_id")->unsigned();
+            $table->integer("cluster_id")->unsigned();
             $table->string("name");
             $table->string("label");
             $table->string("db_database");
             $table->string("db_username");
             $table->string("db_password");
+            $table->integer("public_port");
             $table->timestamps();
 
             $table->foreign("client_id")->references("id")->on("clients");
+            $table->foreign("cluster_id")->references("id")->on("clusters");
+            $table->unique(['cluster_id', "public_port"]);
 
         });
 

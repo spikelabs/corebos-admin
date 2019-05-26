@@ -23,6 +23,8 @@ class Database extends Model
         "db_password",
         "created_at",
         "updated_at",
+        "cluster_id",
+        "public_port"
     ];
 }
 

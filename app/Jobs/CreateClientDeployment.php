@@ -2,10 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Client;
+use App\Cluster;
 use App\Database;
 use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
+use App\Http\Controllers\Controller;
 use App\Ingress;
 use App\Service;
 use Illuminate\Bus\Queueable;
@@ -19,10 +22,17 @@ require_once base_path("grpc/ClientResponse.php");
 require_once base_path("grpc/ClusterManagerClient.php");
 require_once base_path("grpc/CreateClientDatabaseRequest.php");
 require_once base_path("grpc/CreateClientDeploymentRequest.php");
+require_once base_path("grpc/Database.php");
+require_once base_path("grpc/DatabaseNodePort.php");
+require_once base_path("grpc/DatabasePvc.php");
+require_once base_path("grpc/DatabaseService.php");
+require_once base_path("grpc/DeleteClientRequest.php");
 require_once base_path("grpc/Deployment.php");
 require_once base_path("grpc/DeploymentPvc.php");
 require_once base_path("grpc/Ingress.php");
 require_once base_path("grpc/Service.php");
+require_once base_path("grpc/UpdateClientDeploymentRequest.php");
+require_once base_path("grpc/UpdateClientIngressRequest.php");
 require_once base_path("grpc/GrpcClient.php");
 
 
@@ -48,6 +58,12 @@ class CreateClientDeployment implements ShouldQueue
     public function handle()
     {
         //
+
+        $client = Client::find($this->client_id);
+
+        $cluster = Cluster::find($client->cluster_id);
+
+        $configData = Controller::get_cluster_config($cluster->id);
 
         $request = new \CreateClientDeploymentRequest();
 
@@ -84,6 +100,9 @@ class CreateClientDeployment implements ShouldQueue
         $ingress_data->setSubDomain($ingress->sub_domain);
         $ingress_data->setResource($ingress->resource);
         $request->setIngress($ingress_data);
+
+        $request->setDatabaseNodePortName($database->name . "-public");
+        $request->setConfigData($configData);
 
         $client = new \GrpcClient();
 

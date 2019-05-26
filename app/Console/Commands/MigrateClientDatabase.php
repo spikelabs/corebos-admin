@@ -54,14 +54,18 @@ class MigrateClientDatabase extends Command
             $client_database = Database::where("client_id", $id)->first();
             $database_service = DatabaseService::where("client_id", $id)->first();
 
-
             $host = $database_service->name;
             $username = $client_database->db_username;
             $password = $client_database->db_password;
             $db_database = $client_database->db_database;
-            $conn = new mysqli($host, $username, $password, $db_database);
 
-            if ($conn->connect_error) {
+            try{
+                $conn = new mysqli($host, $username, $password, $db_database);
+
+                if ($conn->connect_error) {
+                    continue;
+                }
+            } catch (\Exception $e) {
                 continue;
             }
 
@@ -70,7 +74,6 @@ class MigrateClientDatabase extends Command
 
             dispatch($job);
             $client_ids[] = $id;
-
         }
 
         if (sizeof($client_ids) > 0){

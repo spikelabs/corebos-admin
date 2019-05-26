@@ -3,6 +3,9 @@ syntax = "proto3";
 service ClusterManager {
     rpc CreateClientDatabase (CreateClientDatabaseRequest) returns (ClientResponse) {}
     rpc CreateClientDeployment (CreateClientDeploymentRequest) returns (ClientResponse) {}
+    rpc UpdateClientIngress (UpdateClientIngressRequest) returns (ClientResponse) {}
+    rpc UpdateClientDeployment (UpdateClientDeploymentRequest) returns (ClientResponse) {}
+    rpc DeleteClient (DeleteClientRequest) returns (ClientResponse) {}
 }
 
 message Deployment {
@@ -14,6 +17,7 @@ message Deployment {
     string db_password = 6;
     string db_database = 7;
     string site_url = 8;
+    string image = 9;
 }
 
 message Service {
@@ -50,10 +54,18 @@ message DatabasePvc {
     string storage = 2;
 }
 
+message DatabaseNodePort{
+    string name = 1;
+    string label = 2;
+    int32 port = 3;
+}
+
 message CreateClientDatabaseRequest {
     Database database = 1;
     DatabaseService database_service = 2;
     DatabasePvc database_pvc = 3;
+    DatabaseNodePort database_node_port = 4;
+    string configData = 5;
 }
 
 message CreateClientDeploymentRequest {
@@ -61,6 +73,29 @@ message CreateClientDeploymentRequest {
     Service service = 2;
     DeploymentPvc deployment_pvc = 3;
     Ingress ingress = 4;
+    string database_node_port_name = 5;
+    string configData = 6;
+}
+
+message UpdateClientIngressRequest {
+    Ingress ingress = 1;
+    string configData = 2;
+}
+
+message UpdateClientDeploymentRequest {
+    Deployment deployment = 1;
+    string configData = 2;
+}
+
+message DeleteClientRequest {
+    string deployment_name = 1;
+    string service_name = 2;
+    string deployment_pvc_name = 3;
+    string ingress_name = 4;
+    string database_name = 5;
+    string database_service_name = 6;
+    string database_pvc_name = 7;
+    string configData = 8;
 }
 
 message ClientResponse {

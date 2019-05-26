@@ -172,7 +172,9 @@ class ClientController extends Controller
                 "label" => $label . "-database",
                 "db_username" => str_random(32),
                 "db_password" => str_random(32),
-                "db_database" => $client->name
+                "db_database" => $client->name,
+                "cluster_id" => $data["cluster_id"],
+                "public_port" => 30000 + rand(1, 2767)
             ]);
 
             $database_service = DatabaseService::create([
@@ -218,9 +220,7 @@ class ClientController extends Controller
             'company_name' => 'required|string',
             'description' => 'required|string',
             'sub_domain' => 'required|string',
-            "replicas" => 'required|integer|min:1',
-            "deployment_storage" => 'required|integer|min:1',
-            'database_storage' => 'required|integer|min:1',
+            "email" => 'required|email'
         ]);
 
         $client = Client::find($id);
@@ -234,19 +234,8 @@ class ClientController extends Controller
                 'name' => $request->input('name'),
                 'company_name' => $request->input('company_name'),
                 'description' => $request->input('description'),
-                'sub_domain' => $request->input('sub_domain')
-            ]);
-
-            Deployment::where("client_id", $id)->update([
-                'replicas' => $request->input('replicas'),
-            ]);
-
-            DeploymentPvc::where('client_id', $id)->update([
-                'storage' => $request->input('deployment_storage')
-            ]);
-
-            DatabasePvc::where('client_id', $id)->update([
-                'storage' => $request->input("database_storage")
+                'sub_domain' => $request->input('sub_domain'),
+                'email' => $request->input('email')
             ]);
 
             Ingress::where('client_id', $id)->update([
