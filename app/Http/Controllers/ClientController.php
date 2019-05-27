@@ -200,14 +200,15 @@ class ClientController extends Controller
 
         }, Controller::TRANSACTION_RETRY);
 
-//        $job = (new CreateClientDatabase(
-//                $data['database'],
-//                $data['database_service'],
-//                $data['database_pvc']
-//            ))
-//            ->onConnection('redis');
-//
-//        $this->dispatch($job);
+        $job = (new CreateClientDatabase(
+                $data['database'],
+                $data['database_service'],
+                $data['database_pvc'],
+                $data['client']->id
+            ))
+            ->onConnection('redis');
+
+        $this->dispatch($job);
 
 
         return redirect(route("client", ['id' => $data['client']->id]));

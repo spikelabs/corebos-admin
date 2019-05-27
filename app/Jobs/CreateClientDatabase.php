@@ -50,13 +50,15 @@ class CreateClientDatabase implements ShouldQueue
     private $database;
     private $database_service;
     private $database_pvc;
+    private $client_id;
 
 
-    public function __construct(Database $database, DatabaseService $database_service, DatabasePvc $database_pvc)
+    public function __construct(Database $database, DatabaseService $database_service, DatabasePvc $database_pvc, $client_id)
     {
         $this->database = $database;
         $this->database_pvc = $database_pvc;
         $this->database_service = $database_service;
+        $this->client_id = $client_id;
     }
 
     /**
