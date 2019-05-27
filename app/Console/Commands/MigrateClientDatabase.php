@@ -58,9 +58,10 @@ class MigrateClientDatabase extends Command
             $username = $client_database->db_username;
             $password = $client_database->db_password;
             $db_database = $client_database->db_database;
+            $db_port = $client_database->public_port;
 
             try{
-                $conn = new mysqli($host, $username, $password, $db_database);
+                $conn = new mysqli($host, $username, $password, $db_database, $db_port);
 
                 if ($conn->connect_error) {
                     continue;
