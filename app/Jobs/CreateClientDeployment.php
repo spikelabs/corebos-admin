@@ -63,7 +63,7 @@ class CreateClientDeployment implements ShouldQueue
 
         $cluster = Cluster::find($client->cluster_id);
 
-        $configData = Controller::get_cluster_config($cluster->id);
+        $configData = Controller::get_cluster_config($cluster->cluster_id);
 
         $request = new \CreateClientDeploymentRequest();
 
