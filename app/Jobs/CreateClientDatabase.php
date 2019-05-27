@@ -97,7 +97,7 @@ class CreateClientDatabase implements ShouldQueue
 
         $database_node_port = new \DatabaseNodePort();
         $database_node_port->setLabel($this->database->label);
-        $database_node_port->setName($this->database->name . "-public");
+        $database_node_port->setName($this->database_service->label . "-public");
         $database_node_port->setPort($this->database->public_port);
         $request->setDatabaseNodePort($database_node_port);
         $request->setConfigData($configData);
