@@ -25,6 +25,8 @@ RUN echo "extension=protobuf.so" >> /etc/php/7.1/fpm/php.ini
 RUN echo "extension=grpc.so" >> /etc/php/7.1/cli/php.ini
 RUN echo "extension=protobuf.so" >> /etc/php/7.1/cli/php.ini
 
+RUN sed -i "s|upload_max_filesize\s*=\s*2M|upload_max_filesize = 100M|g" /etc/php7/php-fpm.d
+
 RUN composer global require hirak/prestissimo
 RUN mkdir -p /tmp/composer /run/php
 
