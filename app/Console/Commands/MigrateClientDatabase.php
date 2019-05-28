@@ -54,7 +54,7 @@ class MigrateClientDatabase extends Command
 
             $client_database = Database::where("client_id", $id)->first();
 
-            $cluster = Cluster::find($client->cluter_id);
+            $cluster = Cluster::find($client->cluster_id);
 
             $host = $cluster->ip_address;
             $username = $client_database->db_username;
