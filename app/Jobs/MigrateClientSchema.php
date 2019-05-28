@@ -68,7 +68,7 @@ class MigrateClientSchema implements ShouldQueue
 
         DB::reconnect('mysql');
 
-        $query = file_get_contents(base_path("storage/image_schemas/" . $image->sql_file));
+        $query = file_get_contents(base_path("storage/app/image_schemas/" . $image->sql_file));
 
         DB::unprepared($query);
 
