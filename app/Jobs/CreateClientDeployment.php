@@ -101,7 +101,7 @@ class CreateClientDeployment implements ShouldQueue
         $ingress_data->setResource($ingress->resource);
         $request->setIngress($ingress_data);
 
-        $request->setDatabaseNodePortName($database->name . "-public");
+        $request->setDatabaseNodePortName($database_service->name . "-public");
         $request->setConfigData($configData);
 
         $client = new \GrpcClient();
