@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Client;
+use App\Cluster;
 use App\Database;
 use App\DatabaseService;
 use App\Jobs\MigrateClientSchema;
@@ -52,9 +53,10 @@ class MigrateClientDatabase extends Command
             $id = $client->id;
 
             $client_database = Database::where("client_id", $id)->first();
-            $database_service = DatabaseService::where("client_id", $id)->first();
 
-            $host = $database_service->name;
+            $cluster = Cluster::find($client->cluter_id);
+
+            $host = $cluster->ip_address;
             $username = $client_database->db_username;
             $password = $client_database->db_password;
             $db_database = $client_database->db_database;

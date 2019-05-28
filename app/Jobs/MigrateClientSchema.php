@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Client;
+use App\Cluster;
 use App\Database;
 use App\DatabaseService;
 use App\Image;
@@ -46,10 +47,10 @@ class MigrateClientSchema implements ShouldQueue
         $image = Image::find($client->image_id);
 
         $client_database = Database::where("client_id", $this->client_id)->first();
-        $database_service = DatabaseService::where("client_id", $this->client_id)->first();
 
+        $cluster = Cluster::find($client->cluster_id);
 
-        $host = $database_service->name;
+        $host = $cluster->ip_address;
         $username = $client_database->db_username;
         $password = $client_database->db_password;
         $db_database = $client_database->db_database;
