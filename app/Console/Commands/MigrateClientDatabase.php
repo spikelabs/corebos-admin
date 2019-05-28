@@ -62,15 +62,15 @@ class MigrateClientDatabase extends Command
             $db_database = $client_database->db_database;
             $db_port = $client_database->public_port;
 
-            try{
+//            try{
                 $conn = new mysqli($host, $username, $password, $db_database, $db_port);
 
                 if ($conn->connect_error) {
                     continue;
                 }
-            } catch (\Exception $e) {
-                continue;
-            }
+//            } catch (\Exception $e) {
+//                continue;
+//            }
 
             $job = (new MigrateClientSchema($id))
                 ->onConnection('redis');
