@@ -9,6 +9,7 @@ use App\DatabaseService;
 use App\Deployment;
 use App\DeploymentPvc;
 use App\Http\Controllers\Controller;
+use App\Image;
 use App\Ingress;
 use App\Service;
 use Illuminate\Bus\Queueable;
@@ -63,6 +64,8 @@ class CreateClientDeployment implements ShouldQueue
 
         $cluster = Cluster::find($client->cluster_id);
 
+        $image = Image::find($client->image_id);
+
         $configData = Controller::get_cluster_config($cluster->cluster_id);
 
         $request = new \CreateClientDeploymentRequest();
@@ -83,6 +86,7 @@ class CreateClientDeployment implements ShouldQueue
         $deployment_data->setDbPassword($database->db_password);
         $deployment_data->setDbDatabase($database->db_database);
         $deployment_data->setSiteUrl("https://" . $ingress->sub_domain);
+        $deployment_data->setImage($image->dockerhub_image);
         $request->setDeployment($deployment_data);
 
         $service_data = new \Service();
