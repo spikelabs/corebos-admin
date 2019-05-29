@@ -52,4 +52,8 @@ class GrpcClient
         return $this->client->UpdateClientDeployment($request)->wait();
     }
 
+    public function deleteClient(DeleteClientRequest $request) {
+        return $this->client->DeleteClient($request)->wait();
+    }
+
 }

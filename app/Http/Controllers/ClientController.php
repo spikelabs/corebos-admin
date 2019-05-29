@@ -19,6 +19,7 @@ use App\DeploymentPvc;
 use App\Image;
 use App\Ingress;
 use App\Jobs\CreateClientDatabase;
+use App\Jobs\UpdateClientIngress;
 use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -230,7 +231,8 @@ class ClientController extends Controller
             return redirect();
         }
 
-        DB::transaction(function () use ($request, $id){
+        $result = DB::transaction(function () use ($request, $id, $client){
+
             Client::where('id', $id)->update([
                 'name' => $request->input('name'),
                 'company_name' => $request->input('company_name'),
@@ -243,7 +245,19 @@ class ClientController extends Controller
                 'sub_domain' => $request->input('sub_domain')
             ]);
 
+            return $request->input("sub_domain") == $client->sub_domain ? null : $request->input("sub_domain");
+
         }, Controller::TRANSACTION_RETRY);
+
+        if ($result) {
+            $job = (new UpdateClientIngress(
+                $client->id,
+                $result
+            ))
+                ->onConnection('redis');
+
+            $this->dispatch($job);
+        }
 
         return redirect(route("client", ['id' => $id]));
 
