@@ -86,7 +86,7 @@
                                     <td>{{ $detail->company_name }}</td>
                                     <td>{{ $detail->sub_domain }}</td>
                                     <td><a href="{{ route("client", ["id" => $detail->id]) }}" class="btn btn-primary waves-effect">View</a></td>
-                                    <td><a class="btn btn-danger waves-effect">Delete</a></td>
+                                    <td><a href="{{ route("delete_client", ["id" => $detail->id]) }}" class="btn btn-danger waves-effect">Delete</a></td>
                                 </tr>
                             @endforeach
                             </tbody>

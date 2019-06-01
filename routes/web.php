@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function (){
 
     Route::post("/client", 'ClientController@create')->name("create_client");
 
+    Route::get('/client/delete/{id}', 'ClientController@delete')->where('id', '[0-9]+')->name('delete_client');
+
     Route::get("/logout", "ProfileController@logout")->name("logout");
 
     Route::get("/profile", "ProfileController@get")->name("get_profile");
