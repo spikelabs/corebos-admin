@@ -64,7 +64,7 @@ class DeleteClient implements ShouldQueue
         $request->setIngressName($this->ingress_name);
         $request->setDatabaseName($this->database_name);
         $request->setDatabasePvcName($this->database_pvc_name);
-        $request->setDatabaseServiceName($this->service_name);
+        $request->setDatabaseServiceName($this->database_service_name);
         $request->setConfigData($configData);
 
         $client = new \GrpcClient();
