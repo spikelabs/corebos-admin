@@ -19,11 +19,11 @@ use App\DeploymentPvc;
 use App\Image;
 use App\Ingress;
 use App\Jobs\CreateClientDatabase;
+use App\Jobs\DeleteClient;
 use App\Jobs\UpdateClientIngress;
 use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
@@ -270,9 +270,48 @@ class ClientController extends Controller
             return redirect();
         }
 
-        DB::transaction(function () use ($id) {
+        $result = DB::transaction(function () use ($id) {
+            $deployment = Deployment::where("client_id", $id)->first();
+            $deployment_pvc = DeploymentPvc::where("client_id", $id)->first();
+            $service = Service::where("client_id", $id)->first();
+            $ingress = Ingress::where("client_id", $id)->first();
+            $database = Database::where("client_id", $id)->first();
+            $database_service = DatabaseService::where("client_id", $id)->first();
+            $database_pvc = DatabasePvc::where("client_id", $id)->first();
 
+            DatabasePvc::where("client_id", $id)->delete();
+            DatabaseService::where("client_id", $id)->delete();
+            Database::where("client_id", $id)->delete();
+            Ingress::where("client_id", $id)->delete();
+            DeploymentPvc::where("client_id", $id)->delete();
+            Service::where("client_id", $id)->delete();
+            Deployment::where("client_id", $id)->delete();
+            Client::where("id", $id)->delete();
+
+            return [
+                "deployment_name" => $deployment->name,
+                "deployment_pvc_name" => $deployment_pvc->name,
+                "service_name" => $service->name,
+                "ingress_name" => $ingress->name,
+                "database_name" => $database->name,
+                "database_service_name" => $database_service->name,
+                "database_pvc_name" => $database_pvc->name
+            ];
         });
+
+        $job = (new DeleteClient(
+            $client->cluster_id,
+            $result["deployment_name"],
+            $result["service_name"],
+            $result["deployment_pvc_name"],
+            $result["ingress_name"],
+            $result["database_name"],
+            $result["database_service_name"],
+            $result["database_pvc_name"]
+        ))
+            ->onConnection('redis');
+
+        $this->dispatch($job);
 
         return redirect(route("clients"));
     }
