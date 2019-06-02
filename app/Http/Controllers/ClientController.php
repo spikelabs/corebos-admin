@@ -20,6 +20,7 @@ use App\Image;
 use App\Ingress;
 use App\Jobs\CreateClientDatabase;
 use App\Jobs\DeleteClient;
+use App\Jobs\UpdateClientImage;
 use App\Jobs\UpdateClientIngress;
 use App\Service;
 use Illuminate\Http\Request;
@@ -314,6 +315,30 @@ class ClientController extends Controller
         $this->dispatch($job);
 
         return redirect(route("clients"));
+    }
+
+    public function updateClientImage(Request $request) {
+        $request->validate([
+            "token" => "required|string",
+            "image_tag" => "required|string"
+        ]);
+
+        if ($request->input("token") != env("API_TOKEN")) {
+            return [
+                "success" => 0
+            ];
+        }
+
+        $job = (new UpdateClientImage(
+            $request->input("image_tag")
+        ))
+            ->onConnection('redis');
+
+        $this->dispatch($job);
+
+        return [
+            "success" => 1
+        ];
     }
 
 }

@@ -46,6 +46,11 @@ spec:
                 secretKeyRef:
                   name: clustersecrets
                   key: MYSQL_PASSWORD
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: clustersecrets
+                  key: COREBOS_ADMIN_TOKEN
             - name: APP_ENV
               value: production
             - name: REDIS_HOST
