@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: corebos-admin-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: corebos-admin
+  template:
+    metadata:
+      labels:
+        component: corebos-admin
+    spec:
+      volumes:
+        - name: corebos-admin-storage
+          persistentVolumeClaim:
+            claimName: corebos-admin-pvc
+      containers:
+        - name: corebos-admin
+          image: spikelabs/corebos-admin
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: corebos-admin-storage
+              mountPath: /var/www/html/storage/app
+          env:
+            - name: GRPC_CLIENT
+              value: "corebos-kubernetes-cluster-ip-service:80"
+            - name: DB_HOST
+              value: corebos-database-cluster-ip-service
+            - name: DB_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: clustersecrets
+                  key: MYSQL_DATABASE
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: clustersecrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: clustersecrets
+                  key: DB_PASSWORD
+            - name: APP_ENV
+              value: production
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service

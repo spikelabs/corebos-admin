@@ -3,6 +3,11 @@ sudo: required
 services:
   - docker
 
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - BRANCH=$TRAVIS_BRANCH
+
 before_install:
   - docker build -t spikelabs/corebos-admin-test -f ./deployment/Dockerfile .
 
@@ -10,6 +15,12 @@ script:
   - docker run spikelabs/corebos-admin-test php -v
 
 after_success:
-  - docker build -t spikelabs/corebos-admin -f ./deployment/Dockerfile .
+  - docker build -t spikelabs/corebos-admin:$BRANCH -f ./deployment/Dockerfile .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push spikelabs/corebos-admin
+  - docker push spikelabs/corebos-admin:$BRANCH
+
+deploy:
+  - provider: script
+    script: bash ./stage-prod/deploy.sh
+    on:
+      branch: master
