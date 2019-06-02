@@ -31,7 +31,7 @@ spec:
               value: corebos-database-cluster-ip-service
             - name: DB_PORT
               value: "3306"
-            - name: MYSQL_DATABASE
+            - name: DB_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: clustersecrets
