@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Client;
 use App\Cluster;
 use App\Deployment;
+use App\Http\Controllers\Controller;
 use App\Image;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
