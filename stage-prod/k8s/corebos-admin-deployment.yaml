@@ -51,6 +51,11 @@ spec:
                 secretKeyRef:
                   name: clustersecrets
                   key: COREBOS_ADMIN_TOKEN
+            - name: DIGITAL_OCEAN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: clustersecrets
+                  key: DIGITAL_OCEAN_TOKEN
             - name: APP_ENV
               value: production
             - name: REDIS_HOST
