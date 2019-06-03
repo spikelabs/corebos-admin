@@ -11,6 +11,11 @@ echo "GRPC_CLIENT=$GRPC_CLIENT" >> .env
 echo "DIGITAL_OCEAN_TOKEN=$DIGITAL_OCEAN_TOKEN" >> .env
 echo "API_TOKEN=$API_TOKEN" >> .env
 
+chown -R www-data:www-data /var/www/html/storage/app
+chgrp -R www-data /var/www/html/storage/app
+chmod -R ug+rwx /var/www/html/storage/app
+chmod -R 0777 /var/www/html/storage/app
+
 php artisan cache:clear
 php artisan config:cache
 php artisan config:clear
