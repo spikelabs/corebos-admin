@@ -74,6 +74,7 @@
                                 <th>Name</th>
                                 <th>Company Name</th>
                                 <th>Sub-domain</th>
+                                <th>Status</th>
                                 <th>Details</th>
                                 <th>Delete</th>
                             </tr>
@@ -85,6 +86,7 @@
                                     <td>{{ $detail->name }}</td>
                                     <td>{{ $detail->company_name }}</td>
                                     <td>{{ $detail->sub_domain }}</td>
+                                    <td>{{ $detail->status == 1 ? "Ready" : "Creating" }}</td>
                                     <td><a href="{{ route("client", ["id" => $detail->id]) }}" class="btn btn-primary waves-effect">View</a></td>
                                     <td><a href="{{ route("delete_client", ["id" => $detail->id]) }}" class="btn btn-danger waves-effect">Delete</a></td>
                                 </tr>

@@ -120,5 +120,9 @@ class CreateClientDeployment implements ShouldQueue
             throw new \Exception($response->getError());
         }
 
+        Client::where("id", $this->client_id)->update([
+            "status" => 1
+        ]);
+
     }
 }
