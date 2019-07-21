@@ -57,5 +57,12 @@ Route::middleware('auth')->group(function (){
 
     Route::get("/client-image/delete/{id}", 'ImageController@delete')->where('id', '[0-9]+')->name('delete_image');
 
+    Route::get("/pending-approvals", 'PendingApprovalController@get')->name('pending_approvals');
+
+    Route::get("/pending-approval/{id}", 'PendingApprovalController@get_by_id')->where('id', '[0-9]+')->name('pending_approval');
+
+    Route::get("/pending-approval/delete/{id}", 'PendingApprovalController@delete')->where('id', '[0-9]+')->name('delete_pending_approval');
+
+    Route::post("/pending-approval/approve", 'ClientController@approve')->name('approve_pending_approval');
 
 });

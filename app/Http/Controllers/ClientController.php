@@ -22,9 +22,11 @@ use App\Jobs\CreateClientDatabase;
 use App\Jobs\DeleteClient;
 use App\Jobs\UpdateClientImage;
 use App\Jobs\UpdateClientIngress;
+use App\PendingApproval;
 use App\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
@@ -229,7 +231,7 @@ class ClientController extends Controller
         $client = Client::find($id);
 
         if (!$client) {
-            return redirect();
+            return redirect(route("clients"));
         }
 
         $result = DB::transaction(function () use ($request, $id, $client){
@@ -268,7 +270,7 @@ class ClientController extends Controller
         $client = Client::find($id);
 
         if (!$client) {
-            return redirect();
+            return redirect(route("clients"));
         }
 
         $result = DB::transaction(function () use ($id) {
@@ -318,10 +320,17 @@ class ClientController extends Controller
     }
 
     public function updateClientImage(Request $request) {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             "token" => "required|string",
             "image_tag" => "required|string"
         ]);
+
+        if ($validator->fails()) {
+            return [
+                "success" => 0
+            ];
+        }
 
         if ($request->input("token") != env("API_TOKEN")) {
             return [
@@ -339,6 +348,119 @@ class ClientController extends Controller
         return [
             "success" => 1
         ];
+    }
+
+    public function approve(Request $request) {
+        $request->validate([
+            "id" => "required|integer",
+            "sub_domain" => 'required|string',
+            "cluster_id" => 'required|integer',
+        ]);
+
+        $pending_approval = PendingApproval::find($request->input("id"));
+
+        if (!$pending_approval) {
+            return redirect(route("pending_approvals"));
+        }
+
+        $cluster = Cluster::find($request->input("cluster_id"));
+
+        if (!$cluster) {
+            return redirect(route("pending_approvals"));
+        }
+
+        $sub_domain = $request->input("sub_domain");
+
+        $data = DB::transaction(function () use ($pending_approval, $cluster, $sub_domain){
+
+            $client = Client::create([
+                "name" => $pending_approval->name,
+                "email" => $pending_approval->email,
+                "company_name" => $pending_approval->company_name,
+                "sub_domain" => $sub_domain,
+                "cluster_id" => $cluster->id,
+                "image_id" => $pending_approval->image_id,
+                "description" => $pending_approval->description
+            ]);
+
+            $label = strtolower($client->name . "-" . str_random(16));
+
+            $deployment = Deployment::create([
+                "client_id" => $client->id,
+                "replicas" => 1,
+                "name" => $label . "-deployment",
+                "label" => $label,
+            ]);
+
+            $service = Service::create([
+                "client_id" => $client->id,
+                "deployment_id" => $deployment->id,
+                "name" => $label . "-cluster-ip-service",
+                "label" => $label
+            ]);
+
+            DeploymentPvc::create([
+                "client_id" => $client->id,
+                "deployment_id" => $deployment->id,
+                "name" => $label . "-deployment-pvc",
+                "storage" => "2Gi",
+            ]);
+
+            Ingress::create([
+                "client_id" => $client->id,
+                "service_id" => $service->id,
+                "name" => $label . "-ingress",
+                "sub_domain" => $client->sub_domain,
+                "resource" => $service->name
+            ]);
+
+            $database = Database::create([
+                "client_id" => $client->id,
+                "name" => $label . "-database-deployment",
+                "label" => $label . "-database",
+                "db_username" => str_random(32),
+                "db_password" => str_random(32),
+                "db_database" => $client->name,
+                "cluster_id" => $cluster->id,
+                "public_port" => 30000 + rand(1, 2767)
+            ]);
+
+            $database_service = DatabaseService::create([
+                "client_id" => $client->id,
+                "database_id" => $database->id,
+                "name" => $label . "-database-cluster-ip-service",
+                "label" => $label . "-database"
+            ]);
+
+            $database_pvc = DatabasePvc::create([
+                "client_id" => $client->id,
+                "database_id" => $database->id,
+                "storage" => "2Gi",
+                "name" => $label . "-database-pvc"
+            ]);
+
+            return [
+                'client' => $client,
+                'database' => $database,
+                'database_service' => $database_service,
+                'database_pvc' => $database_pvc
+            ];
+
+        }, Controller::TRANSACTION_RETRY);
+
+        $job = (new CreateClientDatabase(
+            $data['database'],
+            $data['database_service'],
+            $data['database_pvc'],
+            $data['client']->id
+        ))
+            ->onConnection('redis');
+
+        $this->dispatch($job);
+
+
+        return redirect(route("client", ['id' => $data['client']->id]));
+
     }
 
 }

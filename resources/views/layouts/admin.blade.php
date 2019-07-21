@@ -110,6 +110,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li id="pending_approvals">
+                        <a href="{{ route("pending_approvals") }}">
+                            <i class="material-icons">fiber_new</i>
+                            <span>Pending Approval</span>
+                        </a>
+                    </li>
                     <li id="profile">
                         <a href="{{ route("get_profile") }}">
                             <i class="material-icons">create</i>
