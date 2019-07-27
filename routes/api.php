@@ -21,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post("/update_client_image", 'ClientController@updateClientImage');
 
 Route::post("/pending-approval", 'PendingApprovalController@create');
+
+Route::get("/images", 'ImageController@get_api');

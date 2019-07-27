@@ -127,4 +127,17 @@ class ImageController extends Controller
 
         return redirect(route("images"));
     }
+
+    public function get_api(){
+        $images = Image::select("id", "name")->get();
+
+        return [
+            "success" => 1,
+            "code" => 200,
+            "data" => [
+                "message" => "Successfully retrieved images!",
+                "images" => $images
+            ]
+        ];
+    }
 }
